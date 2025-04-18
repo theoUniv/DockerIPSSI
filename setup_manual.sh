@@ -61,7 +61,7 @@ docker run -d \
     --name app_container \
     --network site_network \
     --network-alias app \
-    -p 4743:4743 \
+    -p 5423:4743 \
     app
 
     # Connexion de l'app au réseau DB (si besoin de requêtes SQL)
