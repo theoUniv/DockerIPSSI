@@ -21,16 +21,26 @@
     docker build -t nginx ./nginx
 
     # Lancement du conteneur MySQL
-    docker run -d \
-    --name mysql_container \
-    --network db_network \
-    -v db_volume:/var/lib/mysql \
-    -e MYSQL_ROOT_PASSWORD=rootpassword \
-    -e MYSQL_DATABASE=test_db \
-    -e MYSQL_USER=myuser \
-    -e MYSQL_PASSWORD=mypassword \
-    mysql:8.0
-
+    # docker run -d \
+    # --name mysql_container \
+    # --network db_network \
+    # -v db_volume:/var/lib/mysql \
+    # -e MYSQL_ROOT_PASSWORD=rootpassword \
+    # -e MYSQL_DATABASE=test_db \
+    # -e MYSQL_USER=myuser \
+    # -e MYSQL_PASSWORD=mypassword \
+    # mysql:8.0
+docker run -d \
+  --name mysql_container \
+  --network db_network \
+  -v db_volume:/var/lib/mysql \
+  -v "$(pwd)/mysql/conf/init.sql:/docker-entrypoint-initdb.d/init.sql" \
+  -e MYSQL_ROOT_PASSWORD=rootpassword \
+  -e MYSQL_DATABASE=test_db \
+  -e MYSQL_USER=myuser \
+  -e MYSQL_PASSWORD=mypassword \
+  -p 5655:3306 \
+  mysql:8.0
 
     # Connexion du conteneur MySQL au réseau de l'app
     docker network connect site_network mysql_container
@@ -55,8 +65,13 @@
     app
 
     # Connexion de l'app au réseau DB (si besoin de requêtes SQL)
+    # docker network connect db_network app_container
+    # Connexion de l'app au réseau DB avec un alias explicite pour MySQL
     docker network connect db_network app_container
 
+    # Ajouter cette ligne pour définir l'alias "mysql" pour mysql_container sur le réseau db_network
+    docker network disconnect db_network mysql_container
+    docker network connect --alias mysql db_network mysql_container
     # Lancement du conteneur Nginx
     docker run -d \
     --name nginx_container \

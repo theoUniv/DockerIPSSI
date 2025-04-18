@@ -19,8 +19,8 @@ services:
     expose:
       - "3306" # Expose le port interne pour la communication avec d'autres services dans le même réseau
     volumes:
-      - db_volume:/var/lib/mysql
-      - ./mysql/conf/init.sql:/docker-entrypoint-initdb.d/init.sql # Chargement du script d'initialisation
+      - "db_volume:/var/lib/mysql"
+      - "${PWD}/mysql/conf/init.sql:/docker-entrypoint-initdb.d/init.sql"
     environment:
       MYSQL_ROOT_PASSWORD: "rootpassword" # Mot de passe root pour MySQL
       MYSQL_USER: "myuser" # Utilisateur de la base de données
