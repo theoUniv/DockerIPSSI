@@ -16,9 +16,9 @@
     docker volume create db_volume
 
     # Construction des images
-    docker build -t mysql ./mysql
-    docker build -t app ./app
-    docker build -t nginx ./nginx
+    docker build -f Dockerfile.mysql -t mysql ./mysql
+    docker build -f Dockerfile.app -t app ./app
+    docker build -f Dockerfile.nginx -t nginx ./nginx
 
     # Lancement du conteneur MySQL
     # docker run -d \
@@ -80,6 +80,12 @@ docker run -d \
     -v $(pwd)/nginx/conf/nginx.conf:/etc/nginx/nginx.conf:ro \
     nginx
 
+    # Clean containers 
+    # docker stop nginx_container app_container mysql_container
+    # docker rm nginx_container app_container mysql_container
+    # docker network rm db_network site_network
+    # docker volume rm db_volume
 
-    docker ps
+    # debug
+    # docker ps
 
