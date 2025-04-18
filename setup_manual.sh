@@ -16,9 +16,9 @@
     docker volume create db_volume
 
     # Construction des images
-    docker build -f Dockerfile.mysql -t mysql ./mysql
-    docker build -f Dockerfile.app -t app ./app
-    docker build -f Dockerfile.nginx -t nginx ./nginx
+    docker build  -t mysql ./mysql
+    docker build  -t app ./app
+    docker build  -t nginx ./nginx
 
     # Lancement du conteneur MySQL
     # docker run -d \
